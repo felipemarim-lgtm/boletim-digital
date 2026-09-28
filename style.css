@@ -1,0 +1,239 @@
+/* ===== VARIÁVEIS DE COR (tema steampunk) ===== */
+:root {
+  --vermelho-ferrugem: #7a2b1e;   /* vermelho enferrujado, tipo cano velho */
+  --vermelho-escuro:   #4a1810;   /* sombra do ferrugem */
+  --verde-musgo:       #4a5d3a;   /* verde musgo */
+  --verde-musgo-claro: #6b7d55;   /* musgo mais claro */
+  --metal-escuro:      #2b2622;   /* fundo metálico escuro */
+  --metal-medio:       #3d3630;   /* placas metálicas */
+  --cobre:             #a86b3c;   /* detalhes de cobre/latão */
+  --pergaminho:        #e8d9b5;   /* papel de taverna */
+  --pergaminho-escuro: #c9b78d;   /* sombra do pergaminho */
+  --texto-claro:       #f2e6d0;   /* texto sobre fundo escuro */
+  --texto-escuro:      #2b1f14;   /* texto sobre pergaminho */
+  --borda-metal:       #1a1512;   /* contorno metálico */
+}
+
+/* ===== RESET BÁSICO ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Georgia", "Times New Roman", serif;
+  /* Fundo escuro com textura leve de metal envelhecido */
+  background-color: var(--metal-escuro);
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(168, 107, 60, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(74, 93, 58, 0.10) 0%, transparent 40%);
+  color: var(--texto-claro);
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+/* ===== CABEÇALHO ===== */
+.cabecalho {
+  text-align: center;
+  padding: 24px 16px;
+  margin-bottom: 24px;
+  background: linear-gradient(180deg, var(--vermelho-ferrugem), var(--vermelho-escuro));
+  border: 3px solid var(--borda-metal);
+  border-radius: 10px;
+  /* Efeito de rebites metálicos nas laterais */
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.6),
+    0 6px 0 var(--borda-metal),
+    0 10px 18px rgba(0, 0, 0, 0.5);
+}
+
+.cabecalho h1 {
+  font-size: 2rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--pergaminho);
+  text-shadow: 2px 2px 0 var(--borda-metal), 0 0 12px rgba(168, 107, 60, 0.6);
+}
+
+.subtitulo {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: var(--verde-musgo-claro);
+  letter-spacing: 1px;
+}
+
+/* ===== CARDS DE RESUMO ===== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.card {
+  padding: 18px 16px;
+  border-radius: 8px;
+  border: 3px solid var(--borda-metal);
+  text-align: center;
+  transition: transform 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card h2 {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.card .valor {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.card-obs {
+  font-size: 0.8rem;
+  margin-top: 4px;
+  opacity: 0.85;
+}
+
+/* --- Card estilo PAINEL METÁLICO --- */
+.card-metalico {
+  background: linear-gradient(145deg, var(--metal-medio), #1f1b18);
+  color: var(--texto-claro);
+  box-shadow:
+    inset 0 0 12px rgba(0, 0, 0, 0.7),
+    inset 0 2px 0 rgba(255, 255, 255, 0.05),
+    0 4px 0 var(--borda-metal);
+}
+
+.card-metalico h2 {
+  color: var(--cobre);
+}
+
+.card-metalico .valor {
+  color: var(--pergaminho);
+}
+
+/* --- Card estilo TAVERNA (pergaminho) --- */
+.card-taverna {
+  background: linear-gradient(145deg, var(--pergaminho), var(--pergaminho-escuro));
+  color: var(--texto-escuro);
+  box-shadow:
+    inset 0 0 10px rgba(120, 90, 50, 0.4),
+    0 4px 0 var(--borda-metal);
+}
+
+.card-taverna h2 {
+  color: var(--vermelho-ferrugem);
+}
+
+.card-taverna .valor {
+  color: var(--texto-escuro);
+}
+
+/* ===== ÁREA DA TABELA ===== */
+.tabela-area {
+  background: linear-gradient(180deg, var(--verde-musgo), #33402a);
+  padding: 20px 16px;
+  border-radius: 10px;
+  border: 3px solid var(--borda-metal);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.55), 0 6px 0 var(--borda-metal);
+}
+
+.titulo-secao {
+  text-align: center;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--pergaminho);
+  margin-bottom: 16px;
+  text-shadow: 1px 1px 0 var(--borda-metal);
+}
+
+/* Rolagem horizontal no celular */
+.tabela-rolagem {
+  overflow-x: auto;
+  border-radius: 6px;
+}
+
+table.boletim {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px; /* força rolagem em telas pequenas */
+  background: var(--pergaminho);
+  color: var(--texto-escuro);
+}
+
+table.boletim thead {
+  background: linear-gradient(180deg, var(--vermelho-ferrugem), var(--vermelho-escuro));
+  color: var(--pergaminho);
+}
+
+table.boletim th,
+table.boletim td {
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid var(--borda-metal);
+  font-size: 0.9rem;
+}
+
+table.boletim th:first-child,
+table.boletim td:first-child {
+  text-align: left;
+}
+
+table.boletim tbody tr:nth-child(even) {
+  background: var(--pergaminho-escuro);
+}
+
+table.boletim tbody tr:hover {
+  background: #f4e9c8;
+}
+
+/* Cores das situações */
+.situacao-bom {
+  color: #2f5d2a;
+  font-weight: bold;
+}
+
+.situacao-atencao {
+  color: var(--vermelho-ferrugem);
+  font-weight: bold;
+}
+
+.situacao-sem-nota {
+  color: #6b5a3a;
+  font-style: italic;
+}
+
+/* ===== RODAPÉ ===== */
+.rodape {
+  text-align: center;
+  margin-top: 32px;
+  padding: 14px;
+  font-size: 0.85rem;
+  color: var(--verde-musgo-claro);
+  border-top: 2px dashed var(--cobre);
+}
+
+/* ===== AJUSTES PARA CELULAR ===== */
+@media (max-width: 600px) {
+  .cabecalho h1 {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  .card .valor {
+    font-size: 1.5rem;
+  }
+
+  .titulo-secao {
+    font-size: 1.05rem;
+  }
+}

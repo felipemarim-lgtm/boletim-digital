@@ -10,3 +10,85 @@
     
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Deixa o site funcionar bem no celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boletim Digital</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Cabeçalho com título e série -->
+  <header class="cabecalho">
+    <h1>Boletim Digital</h1>
+    <p class="subtitulo">8º Ano — Estudante Exemplo</p>
+  </header>
+
+  <main class="conteudo">
+
+    <!-- Cards de resumo (valores preenchidos pelo script.js) -->
+    <section class="cards">
+
+      <div class="card card-metalico">
+        <h2>Média Geral</h2>
+        <p class="valor" id="card-media-geral">—</p>
+      </div>
+
+      <div class="card card-taverna">
+        <h2>Total de Faltas</h2>
+        <p class="valor" id="card-total-faltas">—</p>
+      </div>
+
+      <div class="card card-metalico">
+        <h2>Bom Desempenho</h2>
+        <p class="valor" id="card-bom-desempenho">—</p>
+      </div>
+
+      <div class="card card-taverna">
+        <h2>Precisam de Atenção</h2>
+        <p class="valor" id="card-atencao">—</p>
+      </div>
+
+      <div class="card card-metalico">
+        <h2>Frequência</h2>
+        <p class="valor" id="card-frequencia">—</p>
+        <p class="card-obs" id="card-frequencia-obs">—</p>
+      </div>
+
+    </section>
+
+    <!-- Tabela responsiva (linhas criadas pelo script.js) -->
+    <section class="tabela-area">
+      <h2 class="titulo-secao">Notas e Faltas por Disciplina</h2>
+
+      <div class="tabela-rolagem">
+        <table class="boletim">
+          <thead>
+            <tr>
+              <th>Disciplina</th>
+              <th>1º Tri</th>
+              <th>2º Tri</th>
+              <th>3º Tri</th>
+              <th>Média</th>
+              <th>Faltas</th>
+              <th>Situação</th>
+            </tr>
+          </thead>
+          <!-- As linhas serão inseridas aqui pelo JavaScript -->
+          <tbody id="corpo-tabela"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <p>Boletim Digital — dados fictícios para estudo</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
