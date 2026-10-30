@@ -1,16 +1,4 @@
 <!DOCTYPE html>
-<html lang="pt-Br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">  
-    <title>boletim dos rpgstas digital</title>
-</head>
-<body>
-    
-</body>
-</html>
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -29,58 +17,109 @@
 
   <main class="conteudo">
 
-    <!-- Cards de resumo (valores preenchidos pelo script.js) -->
-    <section class="cards">
-
-      <div class="card card-metalico">
-        <h2>Média Geral</h2>
-        <p class="valor" id="card-media-geral">—</p>
-      </div>
-
-      <div class="card card-taverna">
-        <h2>Total de Faltas</h2>
-        <p class="valor" id="card-total-faltas">—</p>
-      </div>
-
-      <div class="card card-metalico">
-        <h2>Bom Desempenho</h2>
-        <p class="valor" id="card-bom-desempenho">—</p>
-      </div>
-
-      <div class="card card-taverna">
-        <h2>Precisam de Atenção</h2>
-        <p class="valor" id="card-atencao">—</p>
-      </div>
-
-      <div class="card card-metalico">
-        <h2>Frequência</h2>
-        <p class="valor" id="card-frequencia">—</p>
-        <p class="card-obs" id="card-frequencia-obs">—</p>
-      </div>
-
+    <!-- Tela de acesso por PIN (mostrada antes do login) -->
+    <section class="acesso" id="tela-acesso">
+      <h2>Acessar Boletim</h2>
+      <p class="info-aluno">Série: 8º Ano &nbsp;|&nbsp; Turma: 8C &nbsp;|&nbsp; Chamada: 38</p>
+      <form id="form-acesso" class="form-acesso" autocomplete="off">
+        <label for="campo-pin">PIN</label>
+        <input type="password" id="campo-pin" name="pin" autocomplete="off" required />
+        <button type="submit" id="btn-entrar" class="botao botao-primario">Entrar</button>
+      </form>
+      <p class="mensagem" id="msg-acesso" role="status"></p>
     </section>
 
-    <!-- Tabela responsiva (linhas criadas pelo script.js) -->
-    <section class="tabela-area">
-      <h2 class="titulo-secao">Notas e Faltas por Disciplina</h2>
+    <!-- Conteúdo do boletim (oculto até o login) -->
+    <section class="boletim-conteudo" id="boletim-conteudo" hidden>
 
-      <div class="tabela-rolagem">
-        <table class="boletim">
-          <thead>
-            <tr>
-              <th>Disciplina</th>
-              <th>1º Tri</th>
-              <th>2º Tri</th>
-              <th>3º Tri</th>
-              <th>Média</th>
-              <th>Faltas</th>
-              <th>Situação</th>
-            </tr>
-          </thead>
-          <!-- As linhas serão inseridas aqui pelo JavaScript -->
-          <tbody id="corpo-tabela"></tbody>
-        </table>
+      <div class="barra-acoes">
+        <button type="button" id="btn-alterar" class="botao">Alterar dados</button>
+        <p class="mensagem" id="msg-boletim" role="status"></p>
       </div>
+
+      <!-- Cards de resumo (valores preenchidos pelo script.js) -->
+      <section class="cards">
+
+        <div class="card card-metalico">
+          <h2>Média Geral</h2>
+          <p class="valor" id="card-media-geral">—</p>
+        </div>
+
+        <div class="card card-taverna">
+          <h2>Total de Faltas</h2>
+          <p class="valor" id="card-total-faltas">—</p>
+        </div>
+
+        <div class="card card-metalico">
+          <h2>Bom Desempenho</h2>
+          <p class="valor" id="card-bom-desempenho">—</p>
+        </div>
+
+        <div class="card card-taverna">
+          <h2>Precisam de Atenção</h2>
+          <p class="valor" id="card-atencao">—</p>
+        </div>
+
+        <div class="card card-metalico">
+          <h2>Frequência</h2>
+          <p class="valor" id="card-frequencia">—</p>
+          <p class="card-obs" id="card-frequencia-obs">—</p>
+        </div>
+
+      </section>
+
+      <!-- Tabela responsiva (linhas criadas pelo script.js) -->
+      <section class="tabela-area" id="area-tabela">
+        <h2 class="titulo-secao">Notas e Faltas por Disciplina</h2>
+
+        <div class="tabela-rolagem">
+          <table class="boletim">
+            <thead>
+              <tr>
+                <th>Disciplina</th>
+                <th>1º Tri</th>
+                <th>2º Tri</th>
+                <th>3º Tri</th>
+                <th>Média</th>
+                <th>Faltas</th>
+                <th>Situação</th>
+              </tr>
+            </thead>
+            <!-- As linhas serão inseridas aqui pelo JavaScript -->
+            <tbody id="corpo-tabela"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Editor de notas e faltas (oculto até clicar em Alterar dados) -->
+      <section class="editor" id="editor" hidden>
+        <h2 class="titulo-secao">Alterar notas e faltas</h2>
+
+        <div class="tabela-rolagem">
+          <table class="boletim editor-tabela">
+            <thead>
+              <tr>
+                <th>Disciplina</th>
+                <th>Nota 1º Tri</th>
+                <th>Nota 2º Tri</th>
+                <th>Nota 3º Tri</th>
+                <th>Faltas 1º</th>
+                <th>Faltas 2º</th>
+                <th>Faltas 3º</th>
+              </tr>
+            </thead>
+            <tbody id="corpo-editor"></tbody>
+          </table>
+        </div>
+
+        <div class="editor-acoes">
+          <button type="button" id="btn-salvar" class="botao botao-primario">Salvar alterações</button>
+          <button type="button" id="btn-cancelar" class="botao">Cancelar</button>
+        </div>
+
+        <p class="mensagem" id="msg-editor" role="status"></p>
+      </section>
+
     </section>
 
   </main>

@@ -237,3 +237,184 @@ table.boletim tbody tr:hover {
     font-size: 1.05rem;
   }
 }
+
+/* =========================================================
+   ADIÇÕES — Tela de acesso, botões, editor e mensagens
+   (mantêm o visual steampunk do projeto)
+   ========================================================= */
+
+/* ---- Tela de acesso por PIN ---- */
+.acesso {
+  max-width: 480px;
+  margin: 32px auto;
+  padding: 24px 20px;
+  background: linear-gradient(145deg, var(--metal-medio), #1f1b18);
+  border: 3px solid var(--borda-metal);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 0 12px rgba(0, 0, 0, 0.7),
+    0 6px 0 var(--borda-metal);
+  text-align: center;
+}
+
+.acesso h2 {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--cobre);
+  margin-bottom: 12px;
+}
+
+.info-aluno {
+  font-size: 0.9rem;
+  color: var(--verde-musgo-claro);
+  margin-bottom: 16px;
+}
+
+.form-acesso {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.form-acesso label {
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--pergaminho);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-acesso input {
+  padding: 10px 12px;
+  border: 2px solid var(--borda-metal);
+  border-radius: 6px;
+  background: var(--pergaminho);
+  color: var(--texto-escuro);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-acesso input:focus {
+  outline: 2px solid var(--cobre);
+  outline-offset: 1px;
+}
+
+/* ---- Botões ---- */
+.botao {
+  padding: 10px 18px;
+  border: 2px solid var(--borda-metal);
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--metal-medio), #1f1b18);
+  color: var(--pergaminho);
+  font-family: inherit;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s ease, filter 0.15s ease;
+}
+
+.botao:hover {
+  filter: brightness(1.15);
+}
+
+.botao:active {
+  transform: translateY(2px);
+}
+
+.botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.botao-primario {
+  background: linear-gradient(180deg, var(--vermelho-ferrugem), var(--vermelho-escuro));
+  color: var(--pergaminho);
+}
+
+/* ---- Mensagens de status ---- */
+.mensagem {
+  min-height: 1.2rem;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--pergaminho);
+  text-align: center;
+}
+
+.mensagem.erro {
+  color: #ff9d8a;
+}
+
+.mensagem.sucesso {
+  color: #a8d68a;
+}
+
+/* ---- Barra de ações acima dos cards ---- */
+.barra-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.barra-acoes .mensagem {
+  margin: 0;
+  flex: 1;
+  text-align: right;
+}
+
+/* ---- Editor de notas e faltas ---- */
+.editor {
+  margin-top: 24px;
+  background: linear-gradient(180deg, var(--verde-musgo), #33402a);
+  padding: 20px 16px;
+  border-radius: 10px;
+  border: 3px solid var(--borda-metal);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.55), 0 6px 0 var(--borda-metal);
+}
+
+.editor-tabela input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--borda-metal);
+  border-radius: 4px;
+  background: #fffaf0;
+  color: var(--texto-escuro);
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.editor-tabela input.invalido {
+  border: 2px solid #b62a2a;
+  background: #ffe4e0;
+  outline: none;
+}
+
+.editor-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+/* Responsivo: editor */
+@media (max-width: 600px) {
+  .editor-tabela input {
+    font-size: 0.85rem;
+    padding: 4px 6px;
+  }
+
+  .barra-acoes {
+    justify-content: center;
+  }
+
+  .barra-acoes .mensagem {
+    text-align: center;
+  }
+}
