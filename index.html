@@ -68,6 +68,33 @@
 
       </section>
 
+      <!-- ÁREA DE GRÁFICOS (somente leitura, preenchida pelo script.js) -->
+      <section class="area-graficos">
+
+        <article class="grafico-card grafico-medio">
+          <h2>Média por disciplina</h2>
+          <div class="grafico-container">
+            <canvas id="graficoMediasDisciplinas"></canvas>
+          </div>
+        </article>
+
+        <article class="grafico-card">
+          <h2>Evolução da média geral</h2>
+          <div class="grafico-container">
+            <canvas id="graficoEvolucaoTrimestres"></canvas>
+          </div>
+        </article>
+
+        <article class="grafico-card" id="graficoCardFaltas">
+          <h2>Faltas por trimestre</h2>
+          <div id="estadoFaltas"></div>
+          <div class="grafico-container">
+            <canvas id="graficoFaltasTrimestres"></canvas>
+          </div>
+        </article>
+
+      </section>
+
       <!-- Tabela responsiva (linhas criadas pelo script.js) -->
       <section class="tabela-area" id="area-tabela">
         <h2 class="titulo-secao">Notas e Faltas por Disciplina</h2>
@@ -128,6 +155,8 @@
     <p>Boletim Digital — dados fictícios para estudo</p>
   </footer>
 
+  <!-- Chart.js (CDN) — carregado antes do script.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

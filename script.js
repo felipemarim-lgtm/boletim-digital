@@ -2,6 +2,7 @@
    BOLETIM DIGITAL — 8º ANO — TURMA 8C — CHAMADA 38
    Dados fictícios + lógica de notas, médias, faltas e situação
    + Acesso por PIN + API do professor
+   + Gráficos (Chart.js) — camada somente leitura
    ========================================================= */
 
 /* ---------- CONFIGURAÇÃO FIXA DO ALUNO ---------- */
@@ -39,6 +40,15 @@ const disciplinas = [
 /* ---------- ESTADO DA SESSÃO (apenas em memória) ---------- */
 let pinSessao = null;
 let dadosAtuais = null;
+
+/* ---------- ESTADO DOS GRÁFICOS (somente leitura) ---------- */
+let graficoMedias = null;
+let graficoEvolucao = null;
+let graficoFaltas = null;
+
+// Referência interna de risco — usada SOMENTE para avaliar situação geral.
+// NUNCA deve ser exibida na interface.
+const REFERENCIA_FALTAS_PERIGO = 350;
 
 /* ---------- FUNÇÕES AUXILIARES (originais) ---------- */
 
@@ -224,6 +234,7 @@ function renderizarTudo() {
   const calc = processarDisciplinas(dadosAtuais);
   renderizarTabela(calc);
   renderizarCards(calc);
+  atualizarGraficos(calc); // única adição: atualiza gráficos após tabela/cards
 }
 
 function renderizarTabela(calc) {
@@ -560,3 +571,240 @@ formAcesso.addEventListener("submit", tentarEntrar);
 btnAlterar.addEventListener("click", abrirEditor);
 btnSalvar.addEventListener("click", salvarAlteracoes);
 btnCancelar.addEventListener("click", fecharEditor);
+
+/* =========================================================
+   GRÁFICOS (Chart.js) — camada SOMENTE LEITURA
+   Não altera dadosAtuais, não chama a API, não toca no editor.
+   ========================================================= */
+
+// Agregadora — chamada no final de renderizarTudo()
+function atualizarGraficos(calc) {
+  // Se não receber a lista pronta, processa dadosAtuais sem mutar nada.
+  const lista = calc || (dadosAtuais ? processarDisciplinas(dadosAtuais) : []);
+  atualizarGraficoMedias(lista);
+  atualizarGraficoEvolucao(lista);
+  atualizarGraficoFaltas(lista);
+}
+
+/* --- Gráfico 1: Média por disciplina (barras horizontais) --- */
+function atualizarGraficoMedias(lista) {
+  const canvas = document.getElementById("graficoMediasDisciplinas");
+  if (!canvas) return;
+
+  if (graficoMedias) {
+    graficoMedias.destroy();
+    graficoMedias = null;
+  }
+
+  // Somente leitura: cria arrays novos a partir da lista recebida.
+  const labels = lista.map(function (d) { return d.disciplina; });
+  const valores = lista.map(function (d) { return d.media; }); // null quando sem nota
+
+  // Cor por situação — verde musgo para bom, ferrugem para atenção, cinza para sem nota
+  const cores = lista.map(function (d) {
+    if (d.media === null) return "rgba(120, 100, 80, 0.45)";
+    if (d.situacao === "Bom desempenho") return "rgba(74, 93, 58, 0.9)";
+    return "rgba(122, 43, 30, 0.9)";
+  });
+
+  graficoMedias = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Média",
+        data: valores,
+        backgroundColor: cores,
+        borderColor: "#1a1512",
+        borderWidth: 1
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          min: 0,
+          max: 10,
+          ticks: { color: "#e8d9b5" },
+          grid: { color: "rgba(232, 217, 181, 0.15)" }
+        },
+        y: {
+          ticks: { color: "#e8d9b5", font: { size: 11 } },
+          grid: { color: "rgba(232, 217, 181, 0.08)" }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function (contexto) {
+              const v = contexto.parsed.x;
+              if (v === null || v === undefined) return "Ainda não lançada";
+              return "Média: " + v.toFixed(1).replace(".", ",");
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+/* --- Gráfico 2: Evolução da média geral (linha) --- */
+function atualizarGraficoEvolucao(lista) {
+  const canvas = document.getElementById("graficoEvolucaoTrimestres");
+  if (!canvas) return;
+
+  if (graficoEvolucao) {
+    graficoEvolucao.destroy();
+    graficoEvolucao = null;
+  }
+
+  // Média de cada trimestre usando apenas notas disponíveis (null não entra).
+  function mediaTrimestre(campo) {
+    const notas = lista
+      .map(function (d) { return d[campo]; })
+      .filter(function (n) { return n !== null; });
+    if (notas.length === 0) return null;
+    const soma = notas.reduce(function (acc, n) { return acc + n; }, 0);
+    return soma / notas.length;
+  }
+
+  const valores = [
+    mediaTrimestre("tri1"),
+    mediaTrimestre("tri2"),
+    mediaTrimestre("tri3")
+  ];
+
+  graficoEvolucao = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels: ["1º Tri", "2º Tri", "3º Tri"],
+      datasets: [{
+        label: "Média geral",
+        data: valores,
+        borderColor: "#a86b3c",
+        backgroundColor: "rgba(168, 107, 60, 0.25)",
+        tension: 0.3,
+        spanGaps: false,
+        pointRadius: 6,
+        pointBackgroundColor: "#7a2b1e",
+        pointBorderColor: "#e8d9b5",
+        pointBorderWidth: 2,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          min: 0,
+          max: 10,
+          ticks: { color: "#e8d9b5" },
+          grid: { color: "rgba(232, 217, 181, 0.15)" }
+        },
+        x: {
+          ticks: { color: "#e8d9b5" },
+          grid: { display: false }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function (contexto) {
+              const v = contexto.parsed.y;
+              if (v === null || v === undefined) return "Sem notas";
+              return "Média: " + v.toFixed(1).replace(".", ",");
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+/* --- Gráfico 3: Faltas por trimestre (3 barras) --- */
+function atualizarGraficoFaltas(lista) {
+  const canvas = document.getElementById("graficoFaltasTrimestres");
+  if (!canvas) return;
+
+  if (graficoFaltas) {
+    graficoFaltas.destroy();
+    graficoFaltas = null;
+  }
+
+  // Soma por índice do array faltas — sem mutar dados originais.
+  let faltasTri1 = 0;
+  let faltasTri2 = 0;
+  let faltasTri3 = 0;
+
+  lista.forEach(function (d) {
+    const f = d.faltas || [0, 0, 0];
+    faltasTri1 += f[0] || 0;
+    faltasTri2 += f[1] || 0;
+    faltasTri3 += f[2] || 0;
+  });
+
+  // Total acumulado — usado SOMENTE para avaliar risco interno.
+  const totalFaltas = faltasTri1 + faltasTri2 + faltasTri3;
+
+  // Badge "Perigo" e destaque visual do card (quando aplicável).
+  const estadoEl = document.getElementById("estadoFaltas");
+  const cardFaltas = document.getElementById("graficoCardFaltas");
+  if (estadoEl && cardFaltas) {
+    if (totalFaltas >= REFERENCIA_FALTAS_PERIGO) {
+      estadoEl.innerHTML = '<span class="badge-perigo">Perigo</span>';
+      cardFaltas.classList.add("critico");
+    } else {
+      estadoEl.innerHTML = "";
+      cardFaltas.classList.remove("critico");
+    }
+  }
+
+  graficoFaltas = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: ["1º Tri", "2º Tri", "3º Tri"],
+      datasets: [{
+        label: "Faltas",
+        data: [faltasTri1, faltasTri2, faltasTri3],
+        backgroundColor: [
+          "rgba(122, 43, 30, 0.9)",
+          "rgba(168, 107, 60, 0.9)",
+          "rgba(74, 93, 58, 0.9)"
+        ],
+        borderColor: "#1a1512",
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { color: "#e8d9b5", precision: 0 },
+          grid: { color: "rgba(232, 217, 181, 0.15)" }
+        },
+        x: {
+          ticks: { color: "#e8d9b5" },
+          grid: { display: false }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function (contexto) {
+              const v = contexto.parsed.y;
+              return contexto.label + ": " + v + " falta" + (v === 1 ? "" : "s");
+            }
+          }
+        }
+      }
+    }
+  });
+}
